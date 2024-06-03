@@ -93,5 +93,18 @@ test(sat_1_xor_x_xor_a_b) :-
 % not sure what to do with this example or how it is used
   sat(1#X#a#b),sat(X=:=a#b).
 
+% ?- set_prolog_flag(clpb_residuals, bdd).
+% true.
+
+% ?- sat(X#Y).
+% clpb:'$clpb_bdd'([node(3)-(v(X, 0)->node(2);node(1)), node(1)-(v(Y, 1)->true;false), node(2)-(v(Y, 1)->false;true)]).
+
+% ?- sat(~(X+Y)).
+% X = Y, Y = 0.
+
+% ?- sat(+[1,Y,X]), sat(X#Y).
+% clpb:'$clpb_bdd'([node(3)-(v(Y, 0)->node(2);node(1)), node(1)-(v(X, 1)->true;false), node(2)-(v(X, 1)->false;true)]).
+
+
 :- end_tests(clpb_example).
 :- run_tests.

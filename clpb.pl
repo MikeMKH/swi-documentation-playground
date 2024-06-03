@@ -105,6 +105,23 @@ test(sat_1_xor_x_xor_a_b) :-
 % ?- sat(+[1,Y,X]), sat(X#Y).
 % clpb:'$clpb_bdd'([node(3)-(v(Y, 0)->node(2);node(1)), node(1)-(v(X, 1)->true;false), node(2)-(v(X, 1)->false;true)]).
 
+test(sat_x_equal_1_andthen_x_equal_1_plus_0_fail, [fail]) :-
+  sat(X=:=1),X=1+0.
+
+test(x_equal_1_plus_0_sat_x_equal_1_andthen_x_equal_1_plus_0) :-
+  X=1+0,sat(X=:=1),X=1+0,
+  assertion(X=:=1+0).
+
+test(sat_x_equal_1_andthen_x_is_1_plus_0) :-
+  sat(X=:=1),X is 1+0,
+  assertion(X=:=1).
+
+% ?- set_prolog_flag(clpb_monotonic, true).
+% true.
+
+% all variables now require to be wrapped with the functor v/1
+% ?- sat(v(X)=:=1#1).
+% X = 0.
 
 :- end_tests(clpb_example).
 :- run_tests.

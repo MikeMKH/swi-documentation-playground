@@ -123,5 +123,60 @@ test(sat_x_equal_1_andthen_x_is_1_plus_0) :-
 % ?- sat(v(X)=:=1#1).
 % X = 0.
 
+:- use_module(library(clpfd)).
+
+pigeon(I, J, Rows, Cs) :-
+  length(Rows, I), length(Row, J),
+  maplist(same_length(Row), Rows),
+  transpose(Rows, TRows),
+  phrase((all_cards(Rows,[1]),all_cards(TRows,[0,1])), Cs).
+
+all_cards([], _) --> [].
+all_cards([Ls|Lss], Cs) --> [card(Cs,Ls)], all_cards(Lss, Cs).
+
+% ?- pigeon(9, 8, Rows, Cs), sat(*(Cs)).
+% Correct to: "plunit_clpb_example:pigeon(9,8,Rows,Cs)"? yes
+% false.
+
+% *(Exprs)	n-fold conjunction
+test(i_think_this_is_saying_that_not_every_hole_has_a_pigeon_for_all_combos, [fail]) :-
+  pigeon(9, 8, Rows, Cs), sat(*(Cs)),
+  assertion(Rows, []).
+
+% ?- pigeon(2, 3, Rows, Cs), sat(*(Cs)),
+% |    append(Rows, Vs), labeling(Vs),
+% |    maplist(portray_clause, Rows).
+% Correct to: "plunit_clpb_example:pigeon(2,3,Rows,Cs)"? yes
+% [0, 0, 1].
+% [0, 1, 0].
+% Rows = [[0, 0, 1], [0, 1, 0]],
+% Cs = [card([1], [0, 0, 1]), card([1], [0, 1, 0]), card([0, 1], [0, 0]), card([0, 1], [0, 1]), card([0, 1], [1, 0])],
+% Vs = [0, 0, 1, 0, 1, 0] ;
+% [0, 0, 1].
+% [1, 0, 0].
+% Rows = [[0, 0, 1], [1, 0, 0]],
+% Cs = [card([1], [0, 0, 1]), card([1], [1, 0, 0]), card([0, 1], [0, 1]), card([0, 1], [0, 0]), card([0, 1], [1, 0])],
+% Vs = [0, 0, 1, 1, 0, 0] ;
+% [0, 1, 0].
+% [0, 0, 1].
+% Rows = [[0, 1, 0], [0, 0, 1]],
+% Cs = [card([1], [0, 1, 0]), card([1], [0, 0, 1]), card([0, 1], [0, 0]), card([0, 1], [1, 0]), card([0, 1], [0, 1])],
+% Vs = [0, 1, 0, 0, 0, 1] ;
+% [0, 1, 0].
+% [1, 0, 0].
+% Rows = [[0, 1, 0], [1, 0, 0]],
+% Cs = [card([1], [0, 1, 0]), card([1], [1, 0, 0]), card([0, 1], [0, 1]), card([0, 1], [1, 0]), card([0, 1], [0, 0])],
+% Vs = [0, 1, 0, 1, 0, 0] ;
+% [1, 0, 0].
+% [0, 0, 1].
+% Rows = [[1, 0, 0], [0, 0, 1]],
+% Cs = [card([1], [1, 0, 0]), card([1], [0, 0, 1]), card([0, 1], [1, 0]), card([0, 1], [0, 0]), card([0, 1], [0, 1])],
+% Vs = [1, 0, 0, 0, 0, 1] ;
+% [1, 0, 0].
+% [0, 1, 0].
+% Rows = [[1, 0, 0], [0, 1, 0]],
+% Cs = [card([1], [1, 0, 0]), card([1], [0, 1, 0]), card([0, 1], [1, 0]), card([0, 1], [0, 1]), card([0, 1], [0, 0])],
+% Vs = [1, 0, 0, 0, 1, 0].
+
 :- end_tests(clpb_example).
 :- run_tests.

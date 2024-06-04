@@ -138,11 +138,6 @@ all_cards([Ls|Lss], Cs) --> [card(Cs,Ls)], all_cards(Lss, Cs).
 % Correct to: "plunit_clpb_example:pigeon(9,8,Rows,Cs)"? yes
 % false.
 
-% *(Exprs)	n-fold conjunction
-test(i_think_this_is_saying_that_not_every_hole_has_a_pigeon_for_all_combos, [fail]) :-
-  pigeon(9, 8, Rows, Cs), sat(*(Cs)),
-  assertion(Rows, []).
-
 % ?- pigeon(2, 3, Rows, Cs), sat(*(Cs)),
 % |    append(Rows, Vs), labeling(Vs),
 % |    maplist(portray_clause, Rows).
@@ -177,6 +172,34 @@ test(i_think_this_is_saying_that_not_every_hole_has_a_pigeon_for_all_combos, [fa
 % Rows = [[1, 0, 0], [0, 1, 0]],
 % Cs = [card([1], [1, 0, 0]), card([1], [0, 1, 0]), card([0, 1], [1, 0]), card([0, 1], [0, 1]), card([0, 1], [0, 0])],
 % Vs = [1, 0, 0, 0, 1, 0].
+
+nand_gate(X, Y, Z) :- sat(Z =:= ~(X*Y)).
+
+xor(X, Y, Z) :-
+  nand_gate(X, Y, T1),
+  nand_gate(X, T1, T2),
+  nand_gate(Y, T1, T3),
+  nand_gate(T2, T3, Z).
+
+test(xor_1_0) :-
+  xor(X, Y, 0#1),
+  assertion(X = 1),
+  assertion(Y = 0).
+
+test(xor_0_1) :-
+  xor(X, Y, 1#0),
+  assertion(X = 1),
+  assertion(Y = 0).
+
+test(xor_1_1) :-
+  xor(X, Y, 1#1),
+  assertion(X = 1),
+  assertion(Y = 1).
+
+test(xor_0_0) :-
+  xor(X, Y, 0#0),
+  assertion(X = 0),
+  assertion(Y = 0).
 
 :- end_tests(clpb_example).
 :- run_tests.

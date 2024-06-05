@@ -3,8 +3,6 @@
 % https://www.swi-prolog.org/pldoc/man?section=clpb
 :- begin_tests(clpb_example).
 
-% A.8.4 Examples
-
 % Expr * Expr	logical AND
 test(sat_x_and_y_x_is_1_y_is_1) :-
   sat(X*Y),

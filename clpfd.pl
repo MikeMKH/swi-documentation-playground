@@ -56,6 +56,37 @@ test(n_factorial_resulting_in_3_fail, [fail]) :-
 % N = 7,
 % F = 5040 .
 
+% ?- X #> 3.
+% X in 4..sup.
+
+% ?- X #\= 20.
+% X in inf..19\/21..sup.
+
+test(x_times_2_eq_10) :-
+  2*X #= 10,
+  assertion(X =:= 5).
+
+% ?- X*X #= 144.
+% X in -12\/12.
+
+test(system_of_equations_can_be_solved) :-
+  4*X + 2*Y #= 24,
+  X + Y #= 9,
+  [X,Y] ins 0..sup,
+  assertion(X =:= 3),
+  assertion(Y =:= 6).
+
+% not sure what #<==>/2 means https://www.swi-prolog.org/pldoc/doc_for?object=%23%3C%3D%3D%3E%20/%202
+% ?- X #= Y #<==> B, X in 0..3, Y in 4..5.
+% B = 0,
+% X in 0..3,
+% Y in 4..5.
+
+% ?- X #= Y + Z, X in 0..5, copy_term([X,Y,Z], [X,Y,Z], Gs).
+% Gs = [clpfd:(Y+Z#=X), clpfd:(X in 0..5)],
+% Y+Z#=X,
+% X in 0..5.
+
 :- end_tests(clpfd_example).
 :- run_tests.
 

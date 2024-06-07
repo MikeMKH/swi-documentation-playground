@@ -76,6 +76,16 @@ test(system_of_equations_can_be_solved) :-
   assertion(X =:= 3),
   assertion(Y =:= 6).
 
+% ?- X + Y #= 4, X + Z #= 5, Y + Z #= 3.
+% X+Z#=5,
+% X+Y#=4,
+% Y+Z#=3.
+
+% ?- X + Y #= 4, X + Z #= 5, Y + Z #= 3, Z #> 1.
+% X = 3,
+% Y = 1,
+% Z = 2.
+
 % not sure what #<==>/2 means https://www.swi-prolog.org/pldoc/doc_for?object=%23%3C%3D%3D%3E%20/%202
 % ?- X #= Y #<==> B, X in 0..3, Y in 4..5.
 % B = 0,
